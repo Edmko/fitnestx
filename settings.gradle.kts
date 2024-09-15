@@ -24,3 +24,5 @@ rootProject.name = "FitnestX"
 include(":app")
 include(":core-ui")
 include(":features:onboarding")
+include(":features:signup")
+include(":core")

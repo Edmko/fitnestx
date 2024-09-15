@@ -8,9 +8,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,11 +17,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -34,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -48,11 +45,15 @@ private const val START_SCREEN_INDEX = 0
 
 @Composable
 fun OnboardingStartScreen() {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .navigationBarsPadding()
+    ) {
         var screenState by remember { mutableIntStateOf(START_SCREEN_INDEX) }
         AnimatedContent(
             targetState = screenState,
-            label = "",
+            label = "AnimatedContent",
             transitionSpec = { slideInHorizontally { it } togetherWith slideOutHorizontally { -it } }
         ) { state ->
             when (state) {
@@ -63,15 +64,12 @@ fun OnboardingStartScreen() {
                 }
             }
         }
-        val progress by remember {
-            derivedStateOf { (screenState / frames.size.toFloat()) }
-        }
-        val progressAnimation by animateFloatAsState(targetValue = progress, label = "")
         if (screenState in FRAMES_RANGE) {
+            val progress by remember { derivedStateOf { screenState / frames.size.toFloat() } }
+            val progressAnimation by animateFloatAsState(targetValue = progress, label = "")
             FloatingButtonWithProgress(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .navigationBarsPadding()
                     .padding(bottom = 30.dp, end = 30.dp)
                     .size(60.dp),
                 progress = progressAnimation,
@@ -84,54 +82,36 @@ fun OnboardingStartScreen() {
 }
 
 @Composable
-private fun BoxScope.FloatingButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    IconButton(
-        modifier = modifier
-            .align(Alignment.BottomEnd)
-            .navigationBarsPadding()
-            .padding(end = 30.dp, bottom = 30.dp)
-            .size(50.dp)
-            .background(AppTheme.colorScheme.brandGradient, shape = CircleShape),
-        onClick = onClick
-    ) {
-        Icon(
-            modifier = Modifier.align(Alignment.Center),
-            painter = painterResource(id = drawable.ic_arrow_right),
-            contentDescription = null,
-            tint = AppTheme.colorScheme.background
-        )
-    }
-}
-
-@Composable
-private fun OnBoardingStartContent(showNextScreen: () -> Unit) {
-
-    Box(modifier = Modifier.fillMaxSize()) {
+private fun OnBoardingStartContent(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = getAppNameTitle())
+            Text(text = appNameTitle)
             Text(text = stringResource(R.string.onboarding_start_subtitle), style = AppTheme.typography.subtitleRegular)
         }
         TextButton(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .navigationBarsPadding()
                 .padding(start = 30.dp, end = 30.dp, bottom = 16.dp)
                 .fillMaxWidth()
                 .height(60.dp),
             text = stringResource(R.string.start_button_title),
-            onClick = { showNextScreen() }
+            onClick = onClick
         )
     }
 }
 
 @Composable
 private fun OnboardingFeaturesScreen(
+    modifier: Modifier = Modifier,
     frame: Frame,
 ) {
-    Column(modifier = Modifier) {
+    Column(modifier = modifier) {
         Image(
             modifier = Modifier
                 .fillMaxWidth()
@@ -153,36 +133,39 @@ private fun OnboardingFeaturesScreen(
     }
 }
 
-@Composable
-private fun getAppNameTitle() = buildAnnotatedString {
-    append(stringResource(id = R.string.onboarding_start_title))
-    addStyle(
-        SpanStyle(
-            color = AppTheme.colorScheme.baseTextColor,
-            fontSize = 36.sp,
-            fontWeight = FontWeight.W700
-        ),
-        start = 0,
-        end = this.length - 1
-    )
-    addStyle(
-        SpanStyle(
-            brush = AppTheme.colorScheme.brandGradient,
-            fontSize = 50.sp,
-            fontWeight = FontWeight.W700
-        ),
-        start = this.length - 1,
-        end = this.length
-    )
-}
 
-internal data class Frame(
+private val appNameTitle: AnnotatedString
+    @Composable
+    @ReadOnlyComposable
+    get() = buildAnnotatedString {
+        append(stringResource(id = R.string.onboarding_start_title))
+        addStyle(
+            SpanStyle(
+                color = AppTheme.colorScheme.textColor,
+                fontSize = 36.sp,
+                fontWeight = FontWeight.W700
+            ),
+            start = 0,
+            end = this.length - 1
+        )
+        addStyle(
+            SpanStyle(
+                brush = AppTheme.colorScheme.brandGradient,
+                fontSize = 50.sp,
+                fontWeight = FontWeight.W700
+            ),
+            start = this.length - 1,
+            end = this.length
+        )
+    }
+
+private data class Frame(
     @DrawableRes val frame: Int,
     @StringRes val title: Int,
     @StringRes val description: Int,
 )
 
-internal val frames = listOf(
+private val frames = listOf(
     Frame(R.drawable.ic_frame_1, R.string.frame_1_title, R.string.frame_1_description),
     Frame(R.drawable.ic_frame_2, R.string.frame_2_title, R.string.frame_2_description),
     Frame(R.drawable.ic_frame_3, R.string.frame_3_title, R.string.frame_3_description),

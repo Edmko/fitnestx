@@ -30,17 +30,41 @@ data class Typography(
         fontSize = 24.sp,
         lineHeight = 36.sp,
     ),
+    val h4Bold: TextStyle = TextStyle.Default.copy(
+        fontFamily = Poppins,
+        fontWeight = FontWeight.W700,
+        fontSize = 20.sp,
+        lineHeight = 30.sp,
+    ),
     val subtitleRegular: TextStyle = TextStyle.Default.copy(
         fontFamily = Poppins,
         fontWeight = FontWeight.W400,
         fontSize = 18.sp,
         lineHeight = 27.sp,
     ),
+    val largeRegular: TextStyle = TextStyle.Default.copy(
+        fontFamily = Poppins,
+        fontWeight = FontWeight.W400,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+    ),
     val mediumRegular: TextStyle = TextStyle.Default.copy(
         fontFamily = Poppins,
         fontWeight = FontWeight.W400,
         fontSize = 14.sp,
         lineHeight = 21.sp,
+    ),
+    val mediumMedium: TextStyle = TextStyle.Default.copy(
+        fontFamily = Poppins,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+        lineHeight = 21.sp,
+    ),
+    val smallRegular: TextStyle = TextStyle.Default.copy(
+        fontFamily = Poppins,
+        fontWeight = FontWeight.W400,
+        fontSize = 12.sp,
+        lineHeight = 18.sp,
     ),
 )
 

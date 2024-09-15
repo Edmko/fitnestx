@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sign_up_greeting_text">Hey there,</string>
+    <string name="sign_up_title">Create an Account</string>
+    <string name="signup_or">Or</string>
+    <string name="sign_up_password_hint">Password</string>
+    <string name="signup_email_hint">Email</string>
+    <string name="sign_up_last_name_hint">Last Name</string>
+    <string name="sign_up_first_name_hint">First name</string>
+    <string name="sign_up_already_have_an_account">Already have an account?</string>
+    <string name="sign_up_login_button_title">Login</string>
+    <string name="sign_up_button_caption">Register</string>
+    <string name="terms_of_use">Terms&#160;of&#160;Use</string>
+    <string name="by_continuing_you_accept_our">"By continuing you accept our "</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="and">" and "</string>
+</resources>

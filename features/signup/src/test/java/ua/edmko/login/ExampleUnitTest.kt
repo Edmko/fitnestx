@@ -1,4 +1,4 @@
-package ua.edmko.onboarding
+package ua.edmko.login
 
 import org.junit.Test
 

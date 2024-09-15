@@ -1,7 +1,6 @@
 package ua.edmko.onboarding.components
 
 import androidx.annotation.FloatRange
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +19,7 @@ import ua.edmko.core_ui.theme.AppTheme
 @Composable
 fun FloatingButtonWithProgress(
     modifier: Modifier = Modifier,
-    @FloatRange(0.0, 1.0) progress: Float = 0.5f,
+    @FloatRange(0.0, 1.0) progress: Float,
     painter: Painter,
     onClick: () -> Unit,
 ) {

@@ -14,6 +14,6 @@ data class Shapes(
 val AppShapes = Shapes(
     small = RoundedCornerShape(4.dp),
     medium = RoundedCornerShape(10.dp),
-    large = RoundedCornerShape(15.dp),
+    large = RoundedCornerShape(16.dp),
     full = RoundedCornerShape(50.dp)
 )
