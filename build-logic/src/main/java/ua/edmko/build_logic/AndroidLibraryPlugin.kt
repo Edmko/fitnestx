@@ -18,6 +18,7 @@ class AndroidLibraryPlugin : Plugin<Project> {
         plugins.run {
             apply("com.android.library")
             apply("kotlin-android")
+            apply("org.jetbrains.kotlin.plugin.serialization")
         }
     }
 

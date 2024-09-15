@@ -12,9 +12,9 @@ class HiltPlugin : Plugin<Project> {
                 apply("dagger.hilt.android.plugin")
             }
             dependencies {
-                "implementation"(libs.findLibrary("hilt-android").get())
-                "ksp"(libs.findLibrary("hilt-android-compiler").get())
-                "testImplementation"(libs.findLibrary("hilt-android-test").get())
+                "implementation"(libs.findLibrary("hilt.android").get())
+                "ksp"(libs.findLibrary("hilt.android.compiler").get())
+                "testImplementation"(libs.findLibrary("hilt.android.test").get())
             }
         }
     }

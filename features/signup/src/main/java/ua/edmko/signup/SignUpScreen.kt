@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
@@ -70,6 +72,7 @@ private fun SignUpContent(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .systemBarsPadding()
             .background(AppTheme.colorScheme.background)
             .padding(horizontal = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -301,7 +304,7 @@ private fun HaveAccountText(
     Text(text = text, modifier = modifier)
 }
 
-@Preview(backgroundColor = 0xFFFFFFFF)
+@Preview
 @Composable
 private fun LoginScreenPreview() {
     AppTheme {

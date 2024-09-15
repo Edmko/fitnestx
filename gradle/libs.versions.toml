@@ -17,6 +17,8 @@ appcompat = "1.7.0"
 material = "1.12.0"
 kotlinCompilerExtension = "1.5.15"
 navigation = "2.8.0"
+kotlinxCoroutines = "1.8.1"
+kotlinxSerializationJson = "1.7.2"
 
 [libraries]
 gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -34,8 +36,15 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version = "5.4.0" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+javax-inject = { module = "javax.inject:javax.inject", version = "1" }
+jsr250-api = { module = "javax.annotation:jsr250-api", version = "1.0" }
+
 
 # Lifecycle
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
@@ -61,9 +70,11 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 
 fitnestx-application = { id = "android.application", version = "unspecified" }
 fitnestx-library = { id = "android.library", version = "unspecified" }
 fitnestx-compose = { id = "compose.config", version = "unspecified" }
 fitnestx-compose-feature = { id = "compose.feature", version = "unspecified" }
+fitnestx-hilt = { id = "hilt.config", version = "unspecified" }
 

@@ -4,43 +4,55 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import ua.edmko.core_ui.theme.AppTheme
+import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
+import ua.edmko.core.NavigationManager
 import ua.edmko.core_ui.controllers.ProvideSnackbarController
-import ua.edmko.signup.SignUpScreen
+import ua.edmko.core_ui.theme.AppTheme
+import ua.edmko.navigation.NavigationComponent
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var navigationManager: NavigationManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
             AppTheme {
                 val snackbarHostState = remember { SnackbarHostState() }
                 val coroutineScope = rememberCoroutineScope()
                 ProvideSnackbarController(
                     snackbarHostState = snackbarHostState,
-                    coroutineScope = coroutineScope
+                    coroutineScope = coroutineScope,
                 ) {
                     Scaffold(
                         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        containerColor = AppTheme.colorScheme.background,
+                        contentWindowInsets = WindowInsets(0)
                     ) { paddings ->
-                        Box(
+                        Surface(
+                            color = AppTheme.colorScheme.background,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(AppTheme.colorScheme.background)
-                                .padding(paddings),
+                                .padding(paddings)
                         ) {
-                            SignUpScreen()
+                            NavigationComponent(navController, navigationManager)
                         }
                     }
                 }

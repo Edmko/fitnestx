@@ -44,11 +44,9 @@ import ua.edmko.onboarding.components.FloatingButtonWithProgress
 private const val START_SCREEN_INDEX = 0
 
 @Composable
-fun OnboardingStartScreen() {
+fun OnboardingStartScreen(toSignUp: () -> Unit) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .navigationBarsPadding()
+        modifier = Modifier.fillMaxSize()
     ) {
         var screenState by remember { mutableIntStateOf(START_SCREEN_INDEX) }
         AnimatedContent(
@@ -59,9 +57,7 @@ fun OnboardingStartScreen() {
             when (state) {
                 START_SCREEN_INDEX -> OnBoardingStartContent { screenState++ }
                 in FRAMES_RANGE -> OnboardingFeaturesScreen(frame = frames[state - 1])
-                else -> {
-                    TODO("navigate to next screen")
-                }
+                else -> toSignUp()
             }
         }
         if (screenState in FRAMES_RANGE) {
@@ -74,8 +70,7 @@ fun OnboardingStartScreen() {
                     .size(60.dp),
                 progress = progressAnimation,
                 painter = painterResource(id = drawable.ic_arrow_right),
-                //TODO assign onClick to { screenState++ }
-                onClick = { if (screenState == frames.size) screenState = START_SCREEN_INDEX else screenState++ }
+                onClick = { screenState++ }
             )
         }
     }
@@ -86,7 +81,11 @@ private fun OnBoardingStartContent(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .navigationBarsPadding()
+    ) {
         Column(
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
