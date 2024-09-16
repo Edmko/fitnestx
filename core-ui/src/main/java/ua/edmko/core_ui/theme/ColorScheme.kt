@@ -19,6 +19,7 @@ data class ColorScheme(
     val minorGrayDark: Color,
     val minorGrayMedium: Color,
     val minorGrayLight: Color,
+    val error: Color
 ) {
 
     val brandGradient = Brush.linearGradient(colors = listOf(brandLight, brandDark))

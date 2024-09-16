@@ -18,7 +18,8 @@ private val LightColorScheme = ColorScheme(
     textColor = BlackAlmost,
     minorGrayLight = GrayLight,
     minorGrayMedium = GrayMedium,
-    minorGrayDark = GrayDark
+    minorGrayDark = GrayDark,
+    error = Red
 )
 
 @Composable
@@ -26,6 +27,7 @@ fun AppTheme(
     colorScheme: ColorScheme = LightColorScheme,
     shapes: Shapes = AppShapes,
     typography: Typography = AppTypography,
+    dimensions: Dimensions = Dimensions(),
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
@@ -33,6 +35,7 @@ fun AppTheme(
         LocalIndication provides ripple(),
         LocalShapes provides shapes,
         LocalTypography provides typography,
+        LocalDimensions provides dimensions
     ) {
         content()
     }
@@ -63,6 +66,11 @@ object AppTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalIndication.current
+
+    val dimensions: Dimensions
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalDimensions.current
 }
 
 internal val LocalTypography = staticCompositionLocalOf { AppTypography }
@@ -70,3 +78,5 @@ internal val LocalTypography = staticCompositionLocalOf { AppTypography }
 internal val LocalShapes = staticCompositionLocalOf { AppShapes }
 
 internal val LocalAppColors = staticCompositionLocalOf { LightColorScheme }
+
+internal val LocalDimensions = staticCompositionLocalOf { Dimensions() }

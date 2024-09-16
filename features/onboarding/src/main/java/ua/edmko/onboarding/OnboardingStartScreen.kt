@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -36,41 +35,57 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ua.edmko.core_ui.R.drawable
 import ua.edmko.core_ui.components.TextButton
+import ua.edmko.core_ui.controllers.SnackbarMessageHandler
 import ua.edmko.core_ui.theme.AppTheme
 import ua.edmko.onboarding.components.FloatingButtonWithProgress
 
 private const val START_SCREEN_INDEX = 0
 
 @Composable
-fun OnboardingStartScreen(toSignUp: () -> Unit) {
+fun OnboardingStartScreen() {
+    val viewModel: OnboardingViewModel = hiltViewModel()
+    val state by viewModel.viewStates.collectAsStateWithLifecycle()
+    state?.let {
+        SnackbarMessageHandler(
+            snackbarMessage = it.snackbarMessage,
+            onDismissSnackbar = { viewModel.obtainEvent(DismissSnackbar) }
+        )
+    }
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .navigationBarsPadding()
     ) {
         var screenState by remember { mutableIntStateOf(START_SCREEN_INDEX) }
-        AnimatedContent(
-            targetState = screenState,
-            label = "AnimatedContent",
-            transitionSpec = { slideInHorizontally { it } togetherWith slideOutHorizontally { -it } }
-        ) { state ->
-            when (state) {
-                START_SCREEN_INDEX -> OnBoardingStartContent { screenState++ }
-                in FRAMES_RANGE -> OnboardingFeaturesScreen(frame = frames[state - 1])
-                else -> toSignUp()
+        if (screenState <= FRAMES_RANGE.last) {
+            AnimatedContent(
+                targetState = screenState,
+                label = "AnimatedContent",
+                transitionSpec = { slideInHorizontally { it } togetherWith slideOutHorizontally { -it } }
+            ) { state ->
+                when (state) {
+                    START_SCREEN_INDEX -> OnBoardingStartContent { screenState++ }
+                    in FRAMES_RANGE -> OnboardingFeaturesScreen(frame = frames[state - 1])
+                    else -> Unit
+                }
             }
         }
+
         if (screenState in FRAMES_RANGE) {
-            val progress by remember { derivedStateOf { screenState / frames.size.toFloat() } }
-            val progressAnimation by animateFloatAsState(targetValue = progress, label = "")
+            val progressAnimation by animateFloatAsState(targetValue = screenState / frames.size.toFloat(), label = "")
             FloatingButtonWithProgress(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(bottom = 30.dp, end = 30.dp)
+                    .padding(bottom = AppTheme.dimensions.verticalEdge, end = AppTheme.dimensions.horizontalEdge)
                     .size(60.dp),
                 progress = progressAnimation,
                 painter = painterResource(id = drawable.ic_arrow_right),
-                onClick = { screenState++ }
+                onClick = { if (screenState < FRAMES_RANGE.last) screenState++ else viewModel.obtainEvent(Complete) }
             )
         }
     }
@@ -96,7 +111,7 @@ private fun OnBoardingStartContent(
         TextButton(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(start = 30.dp, end = 30.dp, bottom = 16.dp)
+                .padding(start = AppTheme.dimensions.horizontalEdge, end = AppTheme.dimensions.horizontalEdge, bottom = AppTheme.dimensions.verticalEdge)
                 .fillMaxWidth()
                 .height(60.dp),
             text = stringResource(R.string.start_button_title),
@@ -120,12 +135,14 @@ private fun OnboardingFeaturesScreen(
             contentDescription = null
         )
         Text(
-            modifier = Modifier.padding(start = 30.dp, end = 30.dp, top = 40.dp),
+            modifier = Modifier
+                .padding(start = AppTheme.dimensions.horizontalEdge, end = AppTheme.dimensions.horizontalEdge, top = 40.dp),
             text = stringResource(id = frame.title),
             style = AppTheme.typography.h2Bold
         )
         Text(
-            modifier = Modifier.padding(start = 30.dp, end = 30.dp, top = 15.dp),
+            modifier = Modifier
+                .padding(start = AppTheme.dimensions.horizontalEdge, end = AppTheme.dimensions.horizontalEdge, top = AppTheme.dimensions.normal),
             text = stringResource(id = frame.description),
             style = AppTheme.typography.mediumRegular
         )

@@ -6,11 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -41,19 +41,12 @@ class MainActivity : ComponentActivity() {
                     coroutineScope = coroutineScope,
                 ) {
                     Scaffold(
-                        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+                        snackbarHost = { SnackbarHost(modifier = Modifier.imePadding(), hostState = snackbarHostState) },
                         modifier = Modifier.fillMaxSize(),
                         containerColor = AppTheme.colorScheme.background,
                         contentWindowInsets = WindowInsets(0)
                     ) { paddings ->
-                        Surface(
-                            color = AppTheme.colorScheme.background,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(paddings)
-                        ) {
-                            NavigationComponent(navController, navigationManager)
-                        }
+                        NavigationComponent(modifier = Modifier.padding(paddings), navController, navigationManager)
                     }
                 }
             }

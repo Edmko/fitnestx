@@ -11,7 +11,7 @@ lifecycle = "2.8.5"
 activityCompose = "1.9.2"
 composeBom = "2024.09.01"
 hilt = "2.51.1"
-ksp = "2.0.20-1.0.24"
+ksp = "2.0.20-1.0.25"
 hiltNavigation = "1.2.0"
 appcompat = "1.7.0"
 material = "1.12.0"
@@ -19,6 +19,7 @@ kotlinCompilerExtension = "1.5.15"
 navigation = "2.8.0"
 kotlinxCoroutines = "1.8.1"
 kotlinxSerializationJson = "1.7.2"
+datastore = "1.1.1"
 
 [libraries]
 gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -44,7 +45,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 javax-inject = { module = "javax.inject:javax.inject", version = "1" }
 jsr250-api = { module = "javax.annotation:jsr250-api", version = "1.0" }
-
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 
 # Lifecycle
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }

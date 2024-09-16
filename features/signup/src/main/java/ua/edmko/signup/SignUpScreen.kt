@@ -13,23 +13,23 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,11 +38,15 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ua.edmko.core_ui.components.EditText
 import ua.edmko.core_ui.components.TextButton
@@ -52,8 +56,8 @@ import ua.edmko.core_ui.theme.checkboxColors
 
 @Composable
 fun SignUpScreen() {
-    val viewModel: SignUpViewModel = viewModel()
-    val state by viewModel.viewStates.collectAsState()
+    val viewModel: SignUpViewModel = hiltViewModel()
+    val state by viewModel.viewStates.collectAsStateWithLifecycle()
     state?.let {
         SnackbarMessageHandler(
             snackbarMessage = it.snackbarMessage,
@@ -69,95 +73,97 @@ private fun SignUpContent(
     state: SignUpViewState,
     events: (SignUpEvent) -> Unit,
 ) {
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .systemBarsPadding()
             .background(AppTheme.colorScheme.background)
-            .padding(horizontal = 30.dp),
+            .padding(horizontal = AppTheme.dimensions.horizontalEdge),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Text(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = AppTheme.dimensions.verticalEdge),
             text = stringResource(R.string.sign_up_greeting_text),
             style = AppTheme.typography.largeRegular
         )
 
         Text(
-            modifier = Modifier.padding(top = 5.dp),
+            modifier = Modifier.padding(top = AppTheme.dimensions.microL),
             text = stringResource(R.string.sign_up_title),
             style = AppTheme.typography.h4Bold)
 
         EditText(
             modifier = Modifier
                 .padding(top = 42.dp)
-                .fillMaxWidth()
-                .height(60.dp),
+                .fillMaxWidth(),
             labelText = stringResource(R.string.sign_up_first_name_hint),
-            value = state.firstName,
+            model = state.firstName,
             onValueChanged = { events(FirstNameChanges(it)) },
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next, keyboardType = KeyboardType.Text),
             leadingIconPainter = painterResource(id = ua.edmko.core_ui.R.drawable.ic_profile),
         )
 
         EditText(
             modifier = Modifier
-                .padding(top = 4.dp)
-                .fillMaxWidth()
-                .height(60.dp),
+                .padding(top = AppTheme.dimensions.micro)
+                .fillMaxWidth(),
             labelText = stringResource(R.string.sign_up_last_name_hint),
-            value = state.lastName,
+            model = state.lastName,
             onValueChanged = { events(LastNameChanges(it)) },
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next, keyboardType = KeyboardType.Text),
             leadingIconPainter = painterResource(id = ua.edmko.core_ui.R.drawable.ic_profile),
         )
 
         EditText(
             modifier = Modifier
-                .padding(top = 15.dp)
-                .fillMaxWidth()
-                .height(60.dp),
+                .padding(top = AppTheme.dimensions.normal)
+                .fillMaxWidth(),
             labelText = stringResource(R.string.signup_email_hint),
-            value = state.email,
+            model = state.email,
             onValueChanged = { events(EmailChanges(it)) },
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email),
             leadingIconPainter = painterResource(id = ua.edmko.core_ui.R.drawable.ic_message),
         )
 
         EditText(
             modifier = Modifier
-                .padding(top = 15.dp)
-                .fillMaxWidth()
-                .height(60.dp),
+                .padding(top = AppTheme.dimensions.normal)
+                .fillMaxWidth(),
             labelText = stringResource(R.string.sign_up_password_hint),
-            value = state.password,
+            model = state.password,
             onValueChanged = { events(PasswordChanges(it)) },
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done, keyboardType = KeyboardType.Password),
             leadingIconPainter = painterResource(id = ua.edmko.core_ui.R.drawable.ic_lock),
         )
 
         Checkbox(
             checked = state.isPrivacyAccepted,
             modifier = Modifier
-                .padding(top = 10.dp)
+                .padding(top = AppTheme.dimensions.small)
                 .align(Alignment.Start),
             events = events
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
+
         TextButton(
             modifier = Modifier
-                .padding(bottom = 16.dp)
+                .padding(bottom = AppTheme.dimensions.normalL)
                 .fillMaxWidth()
                 .height(60.dp),
             text = stringResource(R.string.sign_up_button_caption),
             onClick = { events(RegisterClicks) }
         )
 
-        LoginDivider(modifier = Modifier.padding(top = 20.dp))
+        LoginDivider(modifier = Modifier.padding(top = AppTheme.dimensions.big))
 
-        SideLogin(modifier = Modifier.padding(top = 20.dp), events = events)
+        SideLogin(modifier = Modifier.padding(top = AppTheme.dimensions.big), events = events)
 
         HaveAccountText(
-            modifier = Modifier.padding(top = 30.dp, bottom = 30.dp),
+            modifier = Modifier.padding(top = AppTheme.dimensions.large, bottom = AppTheme.dimensions.verticalEdge),
             onClick = { events(LoginClicks) }
         )
     }
@@ -219,7 +225,7 @@ private fun LoginDivider(
         HorizontalDivider(modifier = Modifier.weight(1f))
         Text(
             text = stringResource(R.string.signup_or),
-            modifier = Modifier.padding(horizontal = 10.dp), style = AppTheme.typography.smallRegular
+            modifier = Modifier.padding(horizontal = AppTheme.dimensions.small), style = AppTheme.typography.smallRegular
         )
         HorizontalDivider(modifier = Modifier.weight(1f), color = AppTheme.colorScheme.minorGrayLight)
     }

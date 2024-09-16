@@ -14,4 +14,5 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":features:onboarding"))
     implementation(project(":features:signup"))
+    implementation(project(":features:goalsetup"))
 }

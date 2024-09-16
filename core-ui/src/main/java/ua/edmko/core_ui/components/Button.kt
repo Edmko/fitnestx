@@ -143,7 +143,7 @@ fun TextButtonWithIcon(
             tint = contentColor
         )
         Text(
-            modifier = Modifier.padding(start = 10.dp),
+            modifier = Modifier.padding(start = AppTheme.dimensions.small),
             text = text,
             color = contentColor
         )
@@ -174,7 +174,10 @@ fun IconButton(
             ),
         contentAlignment = Alignment.Center
     ) {
-        content()
+        CompositionLocalProvider(LocalContentColor provides AppTheme.colorScheme.background) {
+            content()
+        }
+
     }
 }
 
@@ -194,7 +197,6 @@ fun AppButtonPreview() {
                 modifier = Modifier
                     .padding(30.dp)
                     .fillMaxWidth()
-                    .height(60.dp)
                     .align(Alignment.Center)
             )
         }

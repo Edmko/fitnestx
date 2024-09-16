@@ -35,11 +35,10 @@ fun FloatingButtonWithProgress(
         IconButton(
             modifier = Modifier
                 .padding(6.dp)
-                .align(Alignment.Center)
-                .background(AppTheme.colorScheme.brandGradient, shape = CircleShape),
+                .align(Alignment.Center),
             onClick = onClick,
         ) {
-            Icon(painter = painter, contentDescription = null, tint = AppTheme.colorScheme.background)
+            Icon(painter = painter, contentDescription = null)
         }
     }
 }

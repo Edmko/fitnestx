@@ -14,4 +14,8 @@
     <string name="by_continuing_you_accept_our">"By continuing you accept our "</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="and">" and "</string>
+    <string name="min_length_error_title">Length should be at least %d</string>
+    <string name="max_length_error_title">Length should be at most %d</string>
+    <string name="name_unaccepted_symbols">Field should contains only letters</string>
+    <string name="email_validation_error">Invalid email</string>
 </resources>
